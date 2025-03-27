@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\EmployeeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,3 +22,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('employees',[EmployeeController::class,'index']);
 Route::post('employees',[EmployeeController::class,'store']);
+
+
+Route::prefix('patients')->group(function(){
+    Route::get('/',[PatientController::class,'index']);
+    Route::get('/{id}',[PatientController::class,'show']);
+
+    Route::post('/create',[PatientController::class,'store']);
+
+
+});
+
