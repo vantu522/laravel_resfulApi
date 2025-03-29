@@ -3,31 +3,31 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PatientResource;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Hiển thị danh sách bệnh nhân.
      */
     public function index()
     {
-        //
         $patients = Patient::all();
-        return PatientResource::collection($patients);
+        return response()->json([
+            'message' => 'Danh sách bệnh nhân được lấy thành công',
+            'data' => $patients
+        ], 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Lưu một bệnh nhân mới.
      */
     public function store(Request $request)
     {
-        //
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
-            'age'=> 'required|integer|min:0',
+            'age' => 'required|integer|min:0',
             'gender' => 'required|in:male,female,other',
             'diagnosis' => 'required|string',
             'admission_date' => 'required|date',
@@ -36,30 +36,67 @@ class PatientController extends Controller
         ]);
 
         $patient = Patient::create($validated);
-        return new PatientResource($patient);
+        return response()->json([
+            'message' => 'Thêm bệnh nhân thành công',
+            'data' => $patient
+        ], 201);
     }
 
     /**
-     * Display the specified resource.
+     * Hiển thị thông tin chi tiết bệnh nhân.
      */
     public function show(string $id)
     {
-        //
+        $patient = Patient::find($id);
+        if (!$patient) {
+            return response()->json(['message' => 'Bệnh nhân không tồn tại'], 404);
+        }
+        return response()->json([
+            'message' => 'Lấy thông tin bệnh nhân thành công',
+            'data' => $patient
+        ], 200);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Cập nhật thông tin bệnh nhân.
      */
     public function update(Request $request, string $id)
     {
-        //
+        $patient = Patient::find($id);
+        if (!$patient) {
+            return response()->json(['message' => 'Bệnh nhân không tồn tại'], 404);
+        }
+
+        $validated = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'age' => 'required|integer|min:0',
+            'gender' => 'required|in:male,female,other',
+            'diagnosis' => 'required|string',
+            'admission_date' => 'required|date',
+            'discharged' => 'boolean',
+            'room_number' => 'required|string'
+        ]);
+
+        $patient->update($validated);
+        return response()->json([
+            'message' => 'Cập nhật thông tin bệnh nhân thành công',
+            'data' => $patient
+        ], 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Xóa bệnh nhân.
      */
     public function destroy(string $id)
     {
-        //
+        $patient = Patient::find($id);
+        if (!$patient) {
+            return response()->json(['message' => 'Bệnh nhân không tồn tại'], 404);
+        }
+
+        $patient->delete();
+        return response()->json([
+            'message' => 'Xóa bệnh nhân thành công'
+        ], 200);
     }
 }

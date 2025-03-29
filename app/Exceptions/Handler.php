@@ -4,6 +4,9 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -27,4 +30,24 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    
+    
+    public function render($request, Throwable $exception)
+    {
+        $statusCode = 500; // Mặc định là lỗi server
+        $message = $exception->getMessage() ?: 'Something went wrong';
+    
+        if ($exception instanceof HttpException) {
+            $statusCode = $exception->getStatusCode();
+        } elseif ($exception instanceof HttpResponseException) {
+            $statusCode = $exception->getResponse()->getStatusCode();
+        }
+    
+        return response()->json([
+            'message' => $message,
+        ], $statusCode);
+    }
+    
+    
 }

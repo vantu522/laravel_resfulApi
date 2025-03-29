@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\EmployeeController;
 use Illuminate\Http\Request;
@@ -27,9 +28,18 @@ Route::post('employees',[EmployeeController::class,'store']);
 Route::prefix('patients')->group(function(){
     Route::get('/',[PatientController::class,'index']);
     Route::get('/{id}',[PatientController::class,'show']);
-
     Route::post('/create',[PatientController::class,'store']);
-
+    Route::put('/update/{id}',[PatientController::class,'update']);
+    Route::delete('/delete/{id}',[PatientController::class,'destroy']);
 
 });
 
+Route::prefix('doctors')->group(function(){
+    Route::get('/',[DoctorController::class,'index']);
+    Route::post('/create',[DoctorController::class,'store']);
+    Route::get('/{id}',[DoctorController::class,'show']);
+    Route::put('/update/{id}',[DoctorController::class,'update']);
+    Route::delete('/delete/{id}',[DoctorController::class,'destroy']);
+    
+});
+ 

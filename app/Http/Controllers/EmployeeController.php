@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -49,5 +50,6 @@ class EmployeeController extends Controller
     public function destroy(string $id)
     {
         //
+
     }
 }

@@ -21,4 +21,9 @@ protected $casts = [
     'admission_date'=>'date',
     'discharged' => 'boolean'
 ];
+public function appointments()
+{
+    return $this->hasMany(Appointment::class);
+}
+
 }
