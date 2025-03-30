@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\EmployeeController;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,5 +43,12 @@ Route::prefix('doctors')->group(function(){
     Route::put('/update/{id}',[DoctorController::class,'update']);
     Route::delete('/delete/{id}',[DoctorController::class,'destroy']);
     
+});
+
+Route::prefix('appointments')->group(function(){
+    Route::get('/',[AppointmentController::class,'index']);
+    Route::post('/create',[AppointmentController::class,'store']);
+    Route::put('/update/{id}',[AppointmentController::class,'update']);
+    Route::delete('/{id}',[AppointmentController::class,'destroy']);
 });
  
