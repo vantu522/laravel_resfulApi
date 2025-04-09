@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\StatisticsController;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -56,5 +57,10 @@ Route::prefix('appointments')->group(function(){
     Route::post('/create',[AppointmentController::class,'store']);
     Route::put('/update/{id}',[AppointmentController::class,'update']);
     Route::delete('/{id}',[AppointmentController::class,'destroy']);
+});
+
+
+Route::prefix('statistics')->group(function(){
+    Route::get('/',[StatisticsController::class,'totalDoctors']);
 });
  
